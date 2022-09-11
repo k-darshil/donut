@@ -1,0 +1,5 @@
+outs:
+- md5: c6b621d5259f68999b1da4d29b70efae.dir
+  size: 2468594529
+  nfiles: 10
+  path: train_sroie
