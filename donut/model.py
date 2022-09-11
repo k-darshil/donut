@@ -592,13 +592,18 @@ class DonutModel(PreTrainedModel):
                 Name of a pretrained model name either registered in huggingface.co. or saved in local,
                 e.g., `naver-clova-ix/donut-base`, or `naver-clova-ix/donut-base-finetuned-rvlcdip`
         """
+        print("*"*20)
+        print(pretrained_model_name_or_path)
         model = super(DonutModel, cls).from_pretrained(pretrained_model_name_or_path, revision="official", *model_args, **kwargs)
+        print("here 1")
 
         # truncate or interplolate position embeddings of donut decoder
         max_length = kwargs.get("max_length", model.config.max_position_embeddings)
+        print("here 2")
         if (
             max_length != model.config.max_position_embeddings
         ):  # if max_length of trained model differs max_length you want to train
+            print("Inside if")
             model.decoder.model.model.decoder.embed_positions.weight = torch.nn.Parameter(
                 model.decoder.resize_bart_abs_pos_emb(
                     model.decoder.model.model.decoder.embed_positions.weight,
@@ -606,6 +611,9 @@ class DonutModel(PreTrainedModel):
                     + 2,  # https://github.com/huggingface/transformers/blob/v4.11.3/src/transformers/models/mbart/modeling_mbart.py#L118-L119
                 )
             )
+            print("here 3")
             model.config.max_position_embeddings = max_length
+            print("here 4")
 
+        print("here 5")
         return model

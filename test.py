@@ -20,6 +20,7 @@ from donut import DonutModel, JSONParseEvaluator, load_json, save_json
 
 def test(args):
     pretrained_model = DonutModel.from_pretrained(args.pretrained_model_name_or_path)
+    print("Model load complete!")
 
     if torch.cuda.is_available():
         pretrained_model.half()
@@ -28,6 +29,7 @@ def test(args):
         pretrained_model.encoder.to(torch.bfloat16)
 
     pretrained_model.eval()
+    print("Model eval complete!")
 
     if args.save_path:
         os.makedirs(os.path.dirname(args.save_path), exist_ok=True)
@@ -38,6 +40,9 @@ def test(args):
 
     evaluator = JSONParseEvaluator()
     dataset = load_dataset(args.dataset_name_or_path, split=args.split)
+    # dataset = load_dataset("parquet", \
+    # data_files={'train': 'cordV2_as_parquet/train-00000-of-00004-b4aaeceff1d90ecb.parquet',\
+    #  'test': 'cordV2_as_parquet/test-00000-of-00001-9c204eb3f4e11791.parquet'})
 
     for idx, sample in tqdm(enumerate(dataset), total=len(dataset)):
         ground_truth = json.loads(sample["ground_truth"])

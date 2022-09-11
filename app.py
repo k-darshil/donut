@@ -47,6 +47,7 @@ if __name__ == "__main__":
         example_sample.append(args.sample_img_path)
 
     pretrained_model = DonutModel.from_pretrained(args.pretrained_path)
+    print("model read complete!")
 
     if torch.cuda.is_available():
         pretrained_model.half()
