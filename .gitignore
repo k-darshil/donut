@@ -138,4 +138,5 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-sroie-donut/
+# allowing DVC files 
+!*.dvc
